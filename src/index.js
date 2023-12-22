@@ -5,12 +5,15 @@ const hostname='0.0.0.0';
 const port = 3000;
 
 
+const mongoose =require('mongoose');
 
+mongoose.connect(process.env.DB_CONNECTION_STRING);
 server.use(express.urlencoded());
+
 server.use(express.json());
 
-const postRoute=require('../../testNode2/src/api/routes/quotesRoute');
-postRoute(server);
+const birthdayRoute=require('./api/routes/birthdayRoute');
+birthdayRoute(server);
 
 
 
