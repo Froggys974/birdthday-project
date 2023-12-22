@@ -6,4 +6,7 @@ module.exports = (server) => {
     .get(birthdayController.displayTodayBirthday)
     .post(birthdayController.sendMailToday);
 
+    server.route('/sendEmailBirthday')
+    .post(birthdayController.sendMailToday)
+
 }

@@ -55,10 +55,15 @@ exports.sendMailToday = async (req, res) => {
         .status(201)
         .json({ message: `Au total, nous avons envoyé ${nbEmail} mail` });
     }
-  } catch (erreur) {
+    else{
+      res
+      .status(404)
+      .json({ erreur: "Aucun anniversaire aujourd'hui" });
+    }
+  } catch (error) {
     console.error(
       "Erreur lors de l'envoi des e-mails d'anniversaire :",
-      erreur
+      error
     );
     res
       .status(500)
