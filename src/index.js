@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const server = express();
 const hostname='0.0.0.0';
