@@ -7,12 +7,18 @@ const authorMpd = process.env.GMAIL_PASSWORD;
 
 exports.displayTodayBirthday = async (req, res) => {
   try {
-    const todayDate = DateTime.local().startOf("day");
-    const birtdays = await Birthday.find(
-      { date: { $gte: todayDate, $lt: todayDate.plus({ days: 1 }) } },
-      { _id: false, birthdayDate: false, email: false, created_at: false }
-    );
-    res.status(200).json(birtdays);
+    const todayDate = DateTime.local();
+    const birthdays = await Birthday.find({
+      $expr: {
+        $and: [
+          { $eq: [{ $dayOfMonth: { $dateFromString: { dateString: "$BIRTHDATE", format: "%d/%m/%Y" } } }, todayDate.day] },
+          { $eq: [{ $month: { $dateFromString: { dateString: "$BIRTHDATE", format: "%d/%m/%Y" } } }, todayDate.month] }
+        ]
+      }
+    })
+    .select({ _id: 0, FIRSTNAME: 1, LASTNAME: 1 });
+    
+    res.status(200).json(birthdays);
   } catch (error) {
     res.status(500).send("Erreur serveur");
     console.log(error);
@@ -21,10 +27,15 @@ exports.displayTodayBirthday = async (req, res) => {
 
 exports.sendMailToday = async (req, res) => {
   try {
-    const todayDate = DateTime.local().startOf("day");
-    const birtdays = await Birthday.find({
-      date: { $gte: todayDate, $lt: todayDate.plus({ days: 1 }) },
-    });
+    const todayDate = DateTime.local();
+    const birthdays = await Birthday.find({
+      $expr: {
+        $and: [
+          { $eq: [{ $dayOfMonth: { $dateFromString: { dateString: "$BIRTHDATE", format: "%d/%m/%Y" } } }, todayDate.day] },
+          { $eq: [{ $month: { $dateFromString: { dateString: "$BIRTHDATE", format: "%d/%m/%Y" } } }, todayDate.month] }
+        ]
+      }
+    })
     let nbEmail = 0;
     if (birtdays.length > 0) {
       birtdays.forEach(async (personBirthday) => {

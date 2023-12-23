@@ -6,9 +6,9 @@ const port = 3000;
 const mongoose =require('mongoose');
 const cors = require('cors');
 
-const corsOptions = {
+/*const corsOptions = {
   origin: function (origin, callback) {
-      const allowedOrigins = ['http://localhost']; //ajouter autre url
+      const allowedOrigins = ['http://localhost','http://localhost:3000']; //ajouter autre url
 
       if (allowedOrigins.includes(origin)) {
           callback(null, true);
@@ -16,6 +16,15 @@ const corsOptions = {
           callback(new Error('Not allowed by CORS'));
       }
   },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+server.use(cors(corsOptions));*/
+
+const corsOptions = {
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,

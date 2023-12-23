@@ -11,8 +11,8 @@ let birthdaySchema = new Schema(
     lastname: {
       type: String,
     },
-    birthdayDate: {
-      type: Date,
+    birthdate: {
+      type: String, //pas Date car format DD/MM/YYYY dans la base de donnée et complexe a traiter
       required: "La date d'anniversaire est requise",
     },
     email: {
